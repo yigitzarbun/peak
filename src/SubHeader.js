@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "./redux-stuff/actions";
 function SubHeader() {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState(null);
   const handleCategory = (value) => {
-    setCategory(value);
-    dispatch(updateCategory(category));
+    dispatch(updateCategory(value));
   };
   return (
     <div className="w-4/5 mx-auto py-2 flex justify-between">
