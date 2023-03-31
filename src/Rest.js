@@ -4,12 +4,16 @@ import { addArchive } from "./redux-stuff/actions";
 function Rest(props) {
   const { rest } = props;
   const dispatch = useDispatch();
-  const handleArchive = () => {
-    dispatch(addArchive(rest));
+  const handleArchive = (data) => {
+    const dataWide = {
+      ...data,
+      news_id: Date.now(),
+    };
+    dispatch(addArchive(dataWide));
   };
   return (
     <div className=" w-1/4 mt-4 pl-4">
-      <div className="flex" onClick={handleArchive}>
+      <div className="flex" onClick={() => handleArchive(rest)}>
         <img className="w-6 h-6" src="/images/folder.png" />
         <p className="pl-2 font-bold">Archive</p>
       </div>

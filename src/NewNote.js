@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addNote } from "./redux-stuff/actions";
 
 function NewNote(props) {
-  const { newsId, handleNoteArea } = props;
+  const { newsId, handleNoteArea, setNoteArea, noteArea } = props;
   const dispatch = useDispatch();
   const {
     register,
@@ -22,9 +22,21 @@ function NewNote(props) {
     dispatch(addNote(dataWide));
     reset();
   };
+  const handleDiscard = () => {
+    setNoteArea(!noteArea);
+    reset();
+  };
   return (
     <div>
-      <form onSubmit={handleSubmit(handleNote)}>
+      <form
+        className="bg-white shadow-sm w-1/2 mx-auto flex flex-col p-4"
+        onSubmit={handleSubmit(handleNote)}
+      >
+        <img
+          onClick={handleDiscard}
+          className="w-6 h-6"
+          src="/images/cancel.png"
+        />
         <h1>New Note</h1>
         <label>
           <input
@@ -38,7 +50,7 @@ function NewNote(props) {
           />
         </label>
         <label>
-          <textArea
+          <textarea
             {...register("body", {
               required: "This is a required field",
               maxLength: { value: 400, message: "Max 400 characters" },

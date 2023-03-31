@@ -3,6 +3,7 @@ import Header from "./Header";
 import SubHeader from "./SubHeader";
 import Main from "./Main";
 import Archive from "./Archive";
+import DetailedNews from "./DetailedNews";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/archive" element={<Archive />} />
+          <Route path="/archived/:id" element={<DetailedNews />} />
         </Routes>
       </main>
     </div>

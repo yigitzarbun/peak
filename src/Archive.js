@@ -16,7 +16,6 @@ function Archive() {
   useEffect(() => {
     dispatch(getArchive());
   }, []);
-  console.log(archive);
   let resultJsx;
   if (archive == null) {
     resultJsx = "Loading archive..";
@@ -49,13 +48,20 @@ function Archive() {
     ));
   }
   return (
-    <div className="flex flex-wrap justify-between">
+    <>
       {!noteArea ? (
-        resultJsx
+        <div className="flex flex-wrap">{resultJsx}</div>
       ) : (
-        <NewNote newsId={newsId} handleNoteArea={handleNoteArea} />
+        <div>
+          <NewNote
+            newsId={newsId}
+            handleNoteArea={handleNoteArea}
+            setNoteArea={setNoteArea}
+            noteArea={noteArea}
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

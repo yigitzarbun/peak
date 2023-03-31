@@ -84,19 +84,31 @@ export function myReducer(state = initialState, action) {
         archive: [...filteredArchive],
       };
     case ADD_NOTE:
-      console.log(action.payload);
       let copyArchive2 = [...state.archive];
       let selectedNews = copyArchive2.filter(
         (n) => n.news_id == action.payload.news_id
       )[0];
-      selectedNews.notes = [
-        {
-          note_id: action.payload.note_id,
-          news_id: action.payload.news_id,
-          title: action.payload.title,
-          body: action.payload.body,
-        },
-      ];
+      selectedNews.notes && selectedNews.notes != undefined
+        ? (selectedNews.notes = [
+            ...selectedNews.notes,
+            {
+              note_id: action.payload.note_id,
+              news_id: action.payload.news_id,
+              title: action.payload.title,
+              body: action.payload.body,
+              date: Date.now(),
+            },
+          ])
+        : (selectedNews.notes = [
+            {
+              note_id: action.payload.note_id,
+              news_id: action.payload.news_id,
+              title: action.payload.title,
+              body: action.payload.body,
+              date: Date.now(),
+            },
+          ]);
+      writeArchiveToLs(copyArchive2);
       return {
         ...state,
         archive: [...copyArchive2],
