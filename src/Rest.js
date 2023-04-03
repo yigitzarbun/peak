@@ -51,7 +51,6 @@ function Rest(props) {
       )}
       <a href={rest["url"]} target="_blank" className="flex-col">
         <img
-          className="h-1/3"
           src={rest["urlToImage"] ? rest["urlToImage"] : "/images/news.jpg"}
           alt="news-image"
         />

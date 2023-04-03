@@ -50,7 +50,6 @@ function Middle(props) {
       )}
       <a href={middle["url"]} target="_blank">
         <img
-          className="h-1/3"
           src={middle["urlToImage"] ? middle["urlToImage"] : "/images/news.jpg"}
           alt="news-image"
         />
