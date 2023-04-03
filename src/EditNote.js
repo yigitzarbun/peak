@@ -1,46 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { addNote } from "./redux-stuff/actions";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { editNote, getArchive } from "./redux-stuff/actions";
 
-function NewNote(props) {
-  const { newsId, handleNoteArea, setNoteArea, noteArea } = props;
+function EditNote(props) {
+  const { handleEditArea, setEditArea, news, editArea } = props;
+  const archive = useSelector((store) => store.archive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let selectedNews;
+  let note;
+  if (archive != undefined && Array.isArray(archive) && archive.length > 0) {
+    selectedNews = archive.filter((n) => n.news_id == news.news_id)[0];
+    note = selectedNews.notes.filter((n) => n.note_id == news.note_id)[0];
+  }
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid },
-  } = useForm({ mode: "onChange" });
-  const handleNote = (data) => {
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      title: note.title,
+      body: note.body,
+    },
+  });
+
+  const handleEdit = (data) => {
     const dataWide = {
       ...data,
-      note_id: Date.now(),
-      news_id: newsId,
+      note_id: news.note_id,
+      news_id: news.news_id,
     };
-    handleNoteArea(dataWide.news_id);
-    dispatch(addNote(dataWide));
+    dispatch(editNote(dataWide));
     reset();
-    navigate(`/archived/${newsId}`);
+    setEditArea(!editArea);
+    navigate(`/archived/${news.news_id}`);
   };
+
   const handleDiscard = () => {
-    setNoteArea(!noteArea);
+    setEditArea(!editArea);
     reset();
   };
+
+  useEffect(() => {
+    dispatch(getArchive());
+  }, []);
   return (
-    <div className="mt-8 ">
+    <div className="mt-8">
       <form
-        className="newNote bg-white shadow-sm flex flex-col p-4 "
-        onSubmit={handleSubmit(handleNote)}
+        className="editNote bg-white shadow-sm flex flex-col p-4"
+        onSubmit={handleSubmit(handleEdit)}
       >
         <img
           onClick={handleDiscard}
           className="w-6 h-6"
           src="/images/cancel.png"
         />
-        <h1 className="text-2xl font-bold text-center">New Note</h1>
+        <h1 className="text-2xl font-bold text-center">Edit Note</h1>
         <label>
           <input
             className="w-full p-2 border-2 mt-8"
@@ -53,7 +72,6 @@ function NewNote(props) {
             id="title"
           />
         </label>
-        {errors.title && <span>{errors.title.message}</span>}
         <label>
           <textarea
             className="w-full py-4 px-2 mt-4 border-2"
@@ -66,7 +84,6 @@ function NewNote(props) {
             id="body"
           />
         </label>
-        {errors.body && <span>{errors.body.message}</span>}
         <button
           className="border-2 border-black w-1/3 p-2 mt-4 hover:bg-black hover:text-white mx-auto"
           type="submit"
@@ -79,4 +96,4 @@ function NewNote(props) {
   );
 }
 
-export default NewNote;
+export default EditNote;

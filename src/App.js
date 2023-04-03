@@ -11,7 +11,7 @@ function App() {
     <div className="bg-[#fff1e5]">
       <Header />
       <SubHeader />
-      <main className="w-4/5 mx-auto ">
+      <main className="w-4/5 mx-auto">
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/archive" element={<Archive />} />

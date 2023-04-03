@@ -13,9 +13,7 @@ function Archive() {
   };
   const dispatch = useDispatch();
   const archive = useSelector((store) => store.archive);
-  useEffect(() => {
-    dispatch(getArchive());
-  }, []);
+
   let resultJsx;
   if (archive == null) {
     resultJsx = "Loading archive..";
@@ -47,12 +45,17 @@ function Archive() {
       />
     ));
   }
+  useEffect(() => {
+    dispatch(getArchive());
+  }, []);
   return (
     <>
       {!noteArea ? (
-        <div className="flex flex-wrap">{resultJsx}</div>
+        <div className="flex flex-wrap mt-8 max-[700px]:flex-col max-[700px]:flex-nowrap">
+          {resultJsx}
+        </div>
       ) : (
-        <div>
+        <div className="w-1/2 mx-auto max-[700px]:w-full">
           <NewNote
             newsId={newsId}
             handleNoteArea={handleNoteArea}

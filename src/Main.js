@@ -30,23 +30,17 @@ function Main() {
     middle = "News not available";
     rest = "News not available";
   } else {
-    hero = news.filter(
-      (n) => n.urlToImage !== null && n.description !== null
-    )[0];
-    top = news.filter(
-      (n) => n.urlToImage !== null && n.description !== null
-    )[1];
-    bottom = news.filter(
-      (n) => n.urlToImage !== null && n.description !== null
-    )[2];
+    hero = news.filter((n) => n.title !== null)[0];
+    top = news.filter((n) => n.title !== null)[1];
+    bottom = news.filter((n) => n.title !== null)[2];
     middle = news
-      .filter((n) => n.urlToImage !== null && n.description !== null)
+      .filter((n) => n.title !== null)
       .slice(3, 7)
-      .map((middle) => <Middle middle={middle} />);
+      .map((middle) => <Middle key={middle.title} middle={middle} />);
     rest = news
-      .filter((n) => n.urlToImage !== null && n.description !== null)
+      .filter((n) => n.title !== null)
       .slice(8)
-      .map((rest) => <Rest rest={rest} />);
+      .map((rest) => <Rest key={rest.title} rest={rest} />);
   }
   useEffect(() => {
     dispatch(getCategory());
@@ -57,21 +51,25 @@ function Main() {
         country: country,
       })
     );
-  }, [category]);
+  }, [category, country]);
 
   return (
     <div className="flex-col">
-      <div className="flex justify-between mt-4">
-        <div className="flex-col w-3/5 pr-12">
-          <Hero hero={hero} />
+      <div className="flex justify-between mt-4 items-start max-[600px]:flex-col">
+        <div className="flex-col w-3/5 pr-12 max-[600px]:w-full max-[600px]:pr-0">
+          <Hero key={hero.title} hero={hero} />
         </div>
-        <div className="flex-col w-2/5 ">
+        <div className="flex-col w-2/5 max-[600px]:w-full">
           <Top top={top} />
-          <Bottom bottom={bottom} />
+          <Bottom key={bottom.title} bottom={bottom} />
         </div>
       </div>
-      <div className="flex flex-wrap justify-between mt-8">{middle}</div>
-      <div className="flex flex-wrap justify-between mt-8 pb-8">{rest}</div>
+      <div className="flex flex-wrap justify-between mt-8 max-[800px]:flex-col">
+        {middle}
+      </div>
+      <div className="flex flex-wrap justify-between mt-8 pb-8 max-[800px]:flex-col">
+        {rest}
+      </div>
     </div>
   );
 }
